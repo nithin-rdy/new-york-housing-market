@@ -1,0 +1,46 @@
+Regression Model Evaluation
+Linear Regression:
+Mean Absolute Error (MAE): 2,566,030.74, indicating the average absolute difference between predicted and actual prices is around 2.57 million.
+Mean Squared Error (MSE): 23,536,825,336,204.13, showing a large error variance due to price extremes in the dataset.
+R-squared (R²): 0.0658, suggesting that only 6.58% of the variance in house prices is explained by this model.
+
+Decision Tree Regression:
+MAE: 1,007,745.37, showing better accuracy than Linear Regression.
+MSE: 17,104,092,209,671.39, with improved error variance over Linear Regression.
+R²: 0.3211, indicating that 32.11% of the price variance is explained by this model.
+
+Random Forest Regression:
+MAE: 898,149.67, achieving the lowest MAE among models and indicating better prediction accuracy.
+MSE: 19,236,233,796,351.53, showing a moderate error variance.
+R²: 0.2365, suggesting that 23.65% of the price variance is explained by this model.
+Interpretation: The Random Forest Regressor achieved the lowest MAE, suggesting better performance in terms of accuracy compared to other models, even though the R² score is moderate.
+
+Classification Model Evaluation
+Logistic Regression:
+Accuracy: 0.785, meaning the model correctly classifies 78.5% of the samples.
+F1 Score: 0.776, indicating a balance between precision and recall for classifying prices as high or low.
+Precision: 0.792, with moderate accuracy in identifying high prices.
+Recall: 0.761, showing the ability to capture most high-priced properties.
+
+Decision Tree Classification:
+Accuracy: 0.849, demonstrating good accuracy for price classification.
+F1 Score: 0.850, suggesting a solid balance between precision and recall.
+Precision: 0.832, indicating effectiveness in identifying high-price properties.
+Recall: 0.869, capturing a majority of high-price properties correctly.
+
+Random Forest Classifier:
+Accuracy: 0.879, with the highest accuracy in classifying prices as high or low.
+F1 Score: 0.876, showing excellent performance in distinguishing between price categories.
+Precision: 0.882, indicating a strong ability to correctly classify high-priced properties.
+Recall: 0.871, capturing most high-priced properties accurately.
+Interpretation: The Random Forest Classifier significantly outperforms Logistic Regression, achieving the highest accuracy and F1 score, making it the best model for classification.
+
+Summary:
+Overall, the models perform as follows:
+Regression: The Random Forest Regressor provides the most accurate predictions, although R² values are generally low across models due to the data's high variance.
+Classification: The Random Forest Classifier achieves the highest accuracy in categorizing prices, making it the most effective for this task.
+
+
+
+
+
