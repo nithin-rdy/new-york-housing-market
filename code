@@ -1,0 +1,126 @@
+# Import essential libraries for data manipulation and analysis
+import pandas as pd  # for dataframes
+import numpy as np  # for numerical operations
+
+# Import libraries for data visualization
+import matplotlib.pyplot as plt  # for plotting
+import seaborn as sns  # for advanced data visualization
+
+# Import libraries for machine learning
+from sklearn.model_selection import train_test_split  # for splitting dataset
+from sklearn.linear_model import LinearRegression, LogisticRegression  # for regression and classification
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier  # for ensemble models
+from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score  # for regression evaluation
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score  # for classification evaluation
+from sklearn.cluster import KMeans  # for clustering
+from sklearn.preprocessing import StandardScaler  # for scaling data
+
+# Load the dataset
+df = pd.read_csv('NY-House-Dataset.csv')
+print("First few rows of the dataset:")
+print(df.head())  # shows the first five rows
+print("\nDataset Information:")
+df.info()  # provides data types and missing values
+print("\nSummary Statistics:")
+print(df.describe())  # summary statistics for numerical columns
+
+# Check for and handle missing values
+print("\nMissing Values in Each Column:")
+print(df.isnull().sum())
+df = df.dropna()  # Drop rows with missing values or fill with mean/median
+
+# Encode categorical variables
+df = pd.get_dummies(df, drop_first=True)  # converts categorical to binary columns
+
+# Define Feature Matrix (X) and Target Vector (y) for Regression
+X = df.drop('PRICE', axis=1)  # Features (all columns except 'PRICE')
+y = df['PRICE']  # Target variable (PRICE)
+
+# Split Data for Training and Testing (Regression)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Regression Models
+# 1. Linear Regression
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
+y_pred_lr = lr_model.predict(X_test)
+
+# 2. Decision Tree Regressor
+tree_model = DecisionTreeRegressor(random_state=42)
+tree_model.fit(X_train, y_train)
+y_pred_tree = tree_model.predict(X_test)
+
+# 3. Random Forest Regressor
+rf_model = RandomForestRegressor(random_state=42)
+rf_model.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
+
+# Evaluate Regression Models
+print("\nRegression Model Evaluation:")
+print("Linear Regression MAE:", mean_absolute_error(y_test, y_pred_lr))
+print("Linear Regression R2:", r2_score(y_test, y_pred_lr))
+
+print("Decision Tree MAE:", mean_absolute_error(y_test, y_pred_tree))
+print("Decision Tree R2:", r2_score(y_test, y_pred_tree))
+
+print("Random Forest MAE:", mean_absolute_error(y_test, y_pred_rf))
+print("Random Forest R2:", r2_score(y_test, y_pred_rf))
+
+# Create Price Categories for Classification
+median_price = df['PRICE'].median()
+df['PRICE_category'] = df['PRICE'].apply(lambda x: 1 if x >= median_price else 0)
+
+# Define Feature Matrix (X) and Target Vector (y) for Classification
+X = df.drop(['PRICE', 'PRICE_category'], axis=1)
+y = df['PRICE_category']
+
+# Split Data for Training and Testing (Classification)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train Classification Models
+# 1. Logistic Regression
+clf_lr = LogisticRegression()
+clf_lr.fit(X_train, y_train)
+y_pred_clf_lr = clf_lr.predict(X_test)
+
+# 2. Decision Tree Classifier
+clf_tree = DecisionTreeClassifier(random_state=42)
+clf_tree.fit(X_train, y_train)
+y_pred_clf_tree = clf_tree.predict(X_test)
+
+# 3. Random Forest Classifier
+clf_rf = RandomForestClassifier(random_state=42)
+clf_rf.fit(X_train, y_train)
+y_pred_clf_rf = clf_rf.predict(X_test)
+
+# Evaluate Classification Models
+print("\nClassification Model Evaluation:")
+print("Logistic Regression Accuracy:", accuracy_score(y_test, y_pred_clf_lr))
+print("Logistic Regression F1 Score:", f1_score(y_test, y_pred_clf_lr))
+
+print("Decision Tree Classifier Accuracy:", accuracy_score(y_test, y_pred_clf_tree))
+print("Decision Tree Classifier F1 Score:", f1_score(y_test, y_pred_clf_tree))
+
+print("Random Forest Classifier Accuracy:", accuracy_score(y_test, y_pred_clf_rf))
+print("Random Forest Classifier F1 Score:", f1_score(y_test, y_pred_clf_rf))
+
+# Apply KMeans Clustering
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)  # Scale the features in X for clustering
+
+# Using KMeans with 3 clusters
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(X_scaled)
+
+# Print the cluster assignment for each data point
+print("\nKMeans Clustering Assignment Counts:")
+print(df['cluster'].value_counts())
+
+# Visualize the clusters
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x=X_scaled[:, 0], y=X_scaled[:, 1], hue=df['cluster'], palette='viridis')
+plt.title("KMeans Clustering of New York House Prices")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.show()
