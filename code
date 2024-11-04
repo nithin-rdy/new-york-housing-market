@@ -17,7 +17,7 @@ from sklearn.cluster import KMeans  # for clustering
 from sklearn.preprocessing import StandardScaler  # for scaling data
 
 # Load the dataset
-df = pd.read_csv('NY-House-Dataset.csv')
+df = pd.read_csv('/Users/nithi/Downloads/NY-House-Dataset.csv')
 print("First few rows of the dataset:")
 print(df.head())  # shows the first five rows
 print("\nDataset Information:")
